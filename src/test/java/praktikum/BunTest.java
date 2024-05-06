@@ -1,32 +1,38 @@
 package praktikum;
-import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 
+@RunWith(Parameterized.class)
 public class BunTest {
+    private final String name;
+    private final float price;
+    private final static double DELTA = 0.00;
+
+    public BunTest(String name, float price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    @Parameterized.Parameters
+    public static Object[][] BunTestData() {
+        return new Object[][] {
+                {"Булка булка -111", 888},
+                {"Булка черная - 345", 999},
+        };
+    }
 
     @Test
     public void getNameTest() {
-        String bunName = "bunName";
-        Bun bun = new Bun(bunName, 100);
-
-        MatcherAssert.assertThat(
-                "Некорректное название булочки",
-                bun.getName(),
-                equalTo(bunName)
-        );
+        Bun bun = new Bun(name, price);
+        Assert.assertEquals(name,bun.getName());
     }
 
     @Test
     public void getPriceTest() {
-        float bunPrice = 100;
-        Bun bun = new Bun("bunName", bunPrice);
-
-        MatcherAssert.assertThat(
-                "Некорректная цена булочки",
-                bun.getPrice(),
-                equalTo(bunPrice)
-        );
+        Bun bun = new Bun(name, price);
+        Assert.assertEquals(price, bun.getPrice(), DELTA);
     }
 }
